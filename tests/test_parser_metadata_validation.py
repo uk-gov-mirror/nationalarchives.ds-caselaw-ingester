@@ -56,6 +56,18 @@ class TestValidateDocumentProcessingMetadata:
         with pytest.raises(InvalidMetadataException, match="Consignment Ref: TEST-5"):
             validate_document_processing_metadata(data, consignment_reference="TEST-5")
 
+    def test_rejects_malformed_parser_run_id_uuid(self):
+        data = minimal_valid_metadata()
+        data["parameters"]["PARSER"]["parser_run_id"] = "not-a-uuid"
+        with pytest.raises(InvalidMetadataException, match="uuid"):
+            validate_document_processing_metadata(data, consignment_reference="TEST-6")
+
+    def test_rejects_malformed_parser_date(self):
+        data = minimal_valid_metadata()
+        data["parameters"]["PARSER"]["date"] = "not-a-date"
+        with pytest.raises(InvalidMetadataException, match="Consignment Ref: TEST-7"):
+            validate_document_processing_metadata(data, consignment_reference="TEST-7")
+
 
 class TestExtractMetadataValidation:
     def test_extract_metadata_validates_example_tarball(self):

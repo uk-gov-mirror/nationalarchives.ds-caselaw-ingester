@@ -35,7 +35,11 @@ def _document_processing_metadata_validator() -> Draft202012Validator:
     registry = Registry().with_resources(
         [(schemas[name]["$id"], Resource.from_contents(schemas[name])) for name in _SCHEMA_NAMES],
     )
-    return Draft202012Validator(schemas["metadata.schema.json"], registry=registry)
+    return Draft202012Validator(
+        schemas["metadata.schema.json"],
+        registry=registry,
+        format_checker=Draft202012Validator.FORMAT_CHECKER,
+    )
 
 
 def validate_document_processing_metadata(
